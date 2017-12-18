@@ -8,9 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,13 +20,41 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Temporary code
-    Note mTempNote = new Note();
+    private NoteAdapter mNoteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mNoteAdapter = new NoteAdapter();
+
+        ListView noteList = (ListView) findViewById(R.id.listView);
+
+        noteList.setAdapter(mNoteAdapter);
+
+        // Handle clicks on ListView
+        noteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int whichItem, long id) {
+
+                /*
+                Create a temporary Note
+                Which is a Reference to the Note
+                that has just been clicked
+                 */
+
+                Note tempNote = mNoteAdapter.getItem(whichItem);
+                // Create a new dialog window
+                DialogShowNote dialog = new DialogShowNote();
+                // Send in a reference to the note to be shown
+                dialog.sendNoteSelected(tempNote);
+
+                // Show the dialog window with the note in it
+                dialog.show(getFragmentManager(), "");
+
+            }
+        });
 
 
     }
@@ -39,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_add){
-            DialogNewNote dialog =new DialogNewNote();
+            DialogNewNote dialog = new DialogNewNote();
             dialog.show(getFragmentManager(), "");
             return true;
         }
@@ -47,8 +77,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
     public void createNewNote(Note n) {
-        // Temporary code
-        mTempNote = n;
+
+        mNoteAdapter.addNote(n);
+
     }
 
     public class NoteAdapter extends BaseAdapter {
@@ -119,6 +150,13 @@ public class MainActivity extends AppCompatActivity {
             return view;
 
         }
+
+        public void addNote(Note n){
+
+            noteList.add(n);
+            notifyDataSetChanged();
+        }
+
     }
 }
 
