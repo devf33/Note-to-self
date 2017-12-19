@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 public class DialogShowNote extends DialogFragment {
 
-    private Note mNote;
+    Note mNote;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class DialogShowNote extends DialogFragment {
                 (R.id.txtTitle);
         TextView txtDescription = (TextView) dialogView.findViewById
                 (R.id.txtDescription);
+
 
         txtTitle.setText(mNote.getTitle());
         txtDescription.setText(mNote.getDescription());
@@ -57,7 +58,7 @@ public class DialogShowNote extends DialogFragment {
 
         Button btnOK = (Button) dialogView.findViewById(R.id.btnOK);
 
-        builder.setView(dialogView).setMessage("Your Note");
+        builder.setView(dialogView).setMessage("Your mNote");
 
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override

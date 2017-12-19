@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         app:srcCompat="@drawable/ic_warning_black_24dp" />
 
@@ -16,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/imageViewImportant"
         android:layout_toEndOf="@+id/imageViewImportant"
         app:srcCompat="@drawable/ic_check_box_outline_blank_black_24dp" />
 
@@ -24,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/imageViewTodo"
         android:layout_toEndOf="@+id/imageViewTodo"
         app:srcCompat="@drawable/ic_wb_incandescent_black_24dp" />
 
@@ -33,16 +36,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/imageViewImportant"
-        android:text="TextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:text="Large Text"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_marginTop="22dp" />
 
-    <EditText
+    <TextView
         android:id="@+id/txtDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/txtTitle"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:text="New Text" />
 </RelativeLayout>

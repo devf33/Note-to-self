@@ -29,12 +29,12 @@ public class MainActivity extends AppCompatActivity {
 
         mNoteAdapter = new NoteAdapter();
 
-        ListView noteList = (ListView) findViewById(R.id.listView);
+        ListView listNote = (ListView) findViewById(R.id.listView);
 
-        noteList.setAdapter(mNoteAdapter);
+        listNote.setAdapter(mNoteAdapter);
 
         // Handle clicks on ListView
-        noteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listNote.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int whichItem, long id) {
 
@@ -59,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void createNewNote(Note n) {
+
+        mNoteAdapter.addNote(n);
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -73,14 +79,9 @@ public class MainActivity extends AppCompatActivity {
             dialog.show(getFragmentManager(), "");
             return true;
         }
-            return true;
+            return super.onOptionsItemSelected(item);
         }
 
-    public void createNewNote(Note n) {
-
-        mNoteAdapter.addNote(n);
-
-    }
 
     public class NoteAdapter extends BaseAdapter {
 
