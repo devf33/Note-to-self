@@ -3,6 +3,12 @@ package com.gamecodeschool.notetoself;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
     Animation mAnimFlash;
     Animation mFadeIn;
+
+    int mIdBeep = -1;
+    SoundPool mSp;
 
     private NoteAdapter mNoteAdapter;
     private boolean mSound;
@@ -37,6 +47,37 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Instantiate our sound pool
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes audioAttributes = new
+            AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+
+            mSp = new SoundPool.Builder()
+                    .setMaxStreams(5)
+                    .setAudioAttributes(audioAttributes)
+                    .build();
+        } else {
+            mSp = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+        }
+
+        try {
+            // Create object of 2 required classes
+            AssetManager assetManager = this.getAssets();
+            AssetFileDescriptor descriptor;
+
+            // Load our fix in memory ready for use
+            descriptor = assetManager.openFd("beep.ogg");
+            mIdBeep = mSp.load(descriptor, 0);
+
+
+        }catch (IOException e){
+            // Print an error message to the console
+            Log.e("error", "failed to load sound files");
+        }
 
         mNoteAdapter = new NoteAdapter();
 
@@ -54,6 +95,10 @@ public class MainActivity extends AppCompatActivity {
                 Which is a Reference to the Note
                 that has just been clicked
                  */
+
+                if(mSound) {
+                    mSp.play(mIdBeep, 1, 1, 0, 0, 1);
+                }
 
                 Note tempNote = mNoteAdapter.getItem(whichItem);
                 // Create a new dialog window
